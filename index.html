@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM ENIGMA - CYBER BLUE PROTOCOL</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        
+        body {
+            background-color: #030d1d;
+            color: #00d2ff;
+            font-family: 'Fira Code', monospace;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #terminal-container {
+            width: 100%;
+            max-width: 850px;
+            border: 2px solid #00d2ff;
+            padding: 30px;
+            background: #061730;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px dashed #00d2ff;
+            padding-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #00d2ff;
+        }
+
+        .level {
+            display: none;
+            margin-top: 25px;
+            animation: fadeIn 0.8s;
+        }
+
+        .active-level { display: block; }
+
+        .code-box {
+            background: #020b18;
+            color: #80e5ff;
+            padding: 20px;
+            border: 1px solid #00a2ff;
+            word-wrap: break-word;
+            margin: 20px 0;
+            font-size: 15px;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            border-radius: 4px;
+        }
+
+        input {
+            background: #020b18;
+            color: #ffffff;
+            border: 1px solid #00d2ff;
+            padding: 12px;
+            width: calc(100% - 150px);
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        input:focus { outline: none; box-shadow: 0 0 12px #00d2ff; }
+
+        button {
+            background: #00d2ff;
+            color: #030d1d;
+            border: none;
+            padding: 12px 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover { background: #ffffff; box-shadow: 0 0 10px #ffffff; }
+
+        /* Style Symbol Level 3 */
+        .symbol-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .symbol-card {
+            background: #04142c;
+            border: 1px solid #00d2ff;
+            padding: 10px 15px;
+            text-align: center;
+            border-radius: 4px;
+            min-width: 60px;
+        }
+        .symbol-glyph { font-size: 26px; color: #ffffff; display: block; margin-bottom: 5px; }
+        .symbol-label { font-size: 11px; color: #00a2ff; }
+
+        .hint {
+            font-size: 13px;
+            color: #0088cc;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Success Screen */
+        #success { text-align: center; }
+        .glitch-text {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px #00d2ff, -2px -2px #0055ff;
+            margin-bottom: 10px;
+        }
+
+        .url-box {
+            background: #021124;
+            color: #00ffaa;
+            padding: 15px;
+            border: 1px solid #00ffaa;
+            margin: 20px 0;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 4px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #00ffaa;
+            color: #000;
+            padding: 10px 18px;
+            font-size: 14px;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        .copy-btn:hover { background: #ffffff; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="terminal-container">
+    <h1>[ CYBER CORE TERMINAL ]</h1>
+    
+    <!-- LEVEL 1 -->
+    <div id="level-1" class="level active-level">
+        <h3>[ FASE 1 ]: BINER > MORSE & BRAILLE</h3>
+        <p>Terjemahkan deretan kode Biner (UTF-8) di bawah ini. Didalamnya terdapat kalimat yang ditulis dengan kombinasi Morse & Braille Unicode.</p>
+        <div class="code-box" id="bin-clue"></div>
+        
+        <div>
+            <input type="text" id="ans1" placeholder="MASUKKAN KALIMAT KUNCI L1...">
+            <button onclick="checkL1()">DECRYPT</button>
+        </div>
+        <p class="hint">Petunjuk: Gunakan Biner UTF-8 decoder. Bagian 1 = Morse, Bagian 2 = Braille (Gunakan huruf KAPITAL).</p>
+    </div>
+
+    <!-- LEVEL 2 -->
+    <div id="level-2" class="level">
+        <h3>[ FASE 2 ]: DESIMAL & HEKSADESIMAL ASCII</h3>
+        <p>Akses Fase 1 Diterima! Dekode nilai Desimal (Kata Pertama) dan Heksadesimal (Kata Kedua) berikut sesuai standar tabel ASCII baku.</p>
+        <div class="code-box">
+            [KATA PERTAMA - DESIMAL ASCII]:<br>
+            75 85 67 73 78 71 32 72 73 84 65 77<br><br>
+            [KATA KEDUA - HEKSADESIMAL ASCII]:<br>
+            4C 41 52 49 20 43 45 50 41 54
+        </div>
+        
+        <div>
+            <input type="text" id="ans2" placeholder="MASUKKAN KALIMAT KUNCI L2...">
+            <button onclick="checkL2()">DECRYPT</button>
+        </div>
+        <p class="hint">Petunjuk: 75 85... diubah ke Karakter ASCII, lalu 4C 41... diubah dari Hex ke Karakter ASCII. Gabungkan keduanya.</p>
+    </div>
+
+    <!-- LEVEL 3 -->
+    <div id="level-3" class="level">
+        <h3>[ FASE 3 ]: XENO-TYPOGRAPHY UNICODE</h3>
+        <p>Terjemahkan simbol-simbol di bawah ini sesuai abjad standar (Futurama, Standard Galactic, & Inverted Unicode) untuk membuka kunci utama.</p>
+        <div class="code-box">
+            <div class="symbol-grid">
+                <!-- PINTU -->
+                <div class="symbol-card"><span class="symbol-glyph">⠏</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠊</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠝</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠞</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠢</span><span class="symbol-label">Braille</span></div>
+                <div style="width:100%; height:0;"></div>
+                <!-- RAHASIA -->
+                <div class="symbol-card"><span class="symbol-glyph">⎅</span><span class="symbol-label">Futurama</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⎎</span><span class="symbol-label">Futurama</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⎍</span><span class="symbol-label">Futurama</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⎎</span><span class="symbol-label">Futurama</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⎎</span><span class="symbol-label">Futurama</span></div>
+                <div style="width:100%; height:0;"></div>
+                <!-- TERBUKA -->
+                <div class="symbol-card"><span class="symbol-glyph">⠞</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠑</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠗</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠃</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠥</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠅</span><span class="symbol-label">Braille</span></div>
+                <div class="symbol-card"><span class="symbol-glyph">⠁</span><span class="symbol-label">Braille</span></div>
+            </div>
+        </div>
+        
+        <div>
+            <input type="text" id="ans3" placeholder="MASUKKAN KALIMAT KUNCI L3...">
+            <button onclick="checkL3()">DECRYPT</button>
+        </div>
+        <p class="hint">Petunjuk: Terdiri dari 3 Kata (Total 19 Huruf termasuk spasi).</p>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div id="success" class="level">
+        <div class="glitch-text">ACCESS GRANTED</div>
+        <h3 style="color: #00ffaa;">SYSTEM FULLY UNLOCKED</h3>
+        <p style="color: #ffffff; margin-top: 20px;">HERE IS THE CODE:</p>
+        
+        <div class="url-box">
+            <span id="secret-url">https://youtu.be/PL-wMBIE_Ws</span>
+            <button class="copy-btn" onclick="copyUrl()">COPY URL</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // LEVEL 1: MORSE (ANDI PERGI) + BRAILLE (KE PANTAI)
+    // Morse: A(.-) N(-.) D(-..) I(..) / P(.--.) E(.) R(.-.) G(--.) I(..)
+    // Braille: K(⠅) E(⠑) [spasi] P(⠏) A(⠁) N(⠝) T(⠞) A(⠁) I(⠊)
+    const textL1 = "[MORSE] .- -. -.. .. / .--. . .-. --. .. | [BRAILLE] ⠅⠑ ⠏⠁⠝⠞⠁⠊";
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(textL1);
+    const binOutput = Array.from(bytes).map(b => b.toString(2).padStart(8, '0')).join(' ');
+    document.getElementById("bin-clue").innerText = binOutput;
+
+    function normalizeText(str) {
+        return str.trim().toUpperCase().replace(/\s+/g, ' ');
+    }
+
+    function switchLevel(hideId, showId) {
+        document.getElementById(hideId).classList.remove("active-level");
+        document.getElementById(showId).classList.add("active-level");
+    }
+
+    function checkL1() {
+        const ans = normalizeText(document.getElementById("ans1").value);
+        if (ans === "ANDI PERGI KE PANTAI") {
+            switchLevel("level-1", "level-2");
+        } else {
+            alert("[ERROR] KODE SALAH! Pastikan ejaan tepat: 'ANDI PERGI KE PANTAI'");
+        }
+    }
+
+    function checkL2() {
+        const ans = normalizeText(document.getElementById("ans2").value);
+        if (ans === "KUCING HITAM LARI CEPAT") {
+            switchLevel("level-2", "level-3");
+        } else {
+            alert("[ERROR] KODE SALAH! Coba cek konversi Desimal & Heksadesimal ASCII-nya.");
+        }
+    }
+
+    function checkL3() {
+        const ans = normalizeText(document.getElementById("ans3").value);
+        if (ans === "PINTU RAHASIA TERBUKA") {
+            switchLevel("level-3", "success");
+        } else {
+            alert("[ERROR] KODE SALAH! Terjemahan simbol belum pas.");
+        }
+    }
+
+    function copyUrl() {
+        const urlText = document.getElementById("secret-url").innerText;
+        navigator.clipboard.writeText(urlText).then(() => {
+            alert("URL berhasil disalin ke clipboard!");
+        }).catch(() => {
+            alert("Gagal menyalin otomatis. Silakan salin manual.");
+        });
+    }
+</script>
+
+</body>
+</html>
